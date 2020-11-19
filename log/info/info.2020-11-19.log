@@ -1,0 +1,26 @@
+2020-11-19 20:52:37.740 halo-blog [main] INFO  c.e.evaluation.EvaluationApplication - Starting EvaluationApplication using Java 1.8.0_121 on ayxworxfr with PID 7256 (I:\web\project-todo\title-evaluation\target\classes started by 安羽兮 in I:\web\project-todo\title-evaluation)
+2020-11-19 20:52:37.746 halo-blog [main] INFO  c.e.evaluation.EvaluationApplication - No active profile set, falling back to default profiles: default
+2020-11-19 20:52:39.766 halo-blog [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8486 (http)
+2020-11-19 20:52:39.779 halo-blog [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8486"]
+2020-11-19 20:52:39.780 halo-blog [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2020-11-19 20:52:39.781 halo-blog [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.39]
+2020-11-19 20:52:39.886 halo-blog [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2020-11-19 20:52:39.887 halo-blog [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1979 ms
+2020-11-19 20:52:40.018 halo-blog [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2020-11-19 20:52:40.049 halo-blog [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-11-19 20:54:17.415 halo-blog [main] INFO  c.e.evaluation.EvaluationApplication - Starting EvaluationApplication using Java 1.8.0_121 on ayxworxfr with PID 1284 (I:\web\project-todo\title-evaluation\target\classes started by 安羽兮 in I:\web\project-todo\title-evaluation)
+2020-11-19 20:54:17.418 halo-blog [main] INFO  c.e.evaluation.EvaluationApplication - No active profile set, falling back to default profiles: default
+2020-11-19 20:54:18.565 halo-blog [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8486 (http)
+2020-11-19 20:54:18.572 halo-blog [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8486"]
+2020-11-19 20:54:18.573 halo-blog [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2020-11-19 20:54:18.573 halo-blog [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.39]
+2020-11-19 20:54:18.638 halo-blog [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2020-11-19 20:54:18.638 halo-blog [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1138 ms
+2020-11-19 20:54:18.825 halo-blog [main] INFO  c.a.d.s.b.a.DruidDataSourceAutoConfigure - Init DruidDataSource
+2020-11-19 20:54:19.108 halo-blog [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2020-11-19 20:54:19.715 halo-blog [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2020-11-19 20:54:19.890 halo-blog [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8486"]
+2020-11-19 20:54:19.906 halo-blog [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8486 (http) with context path ''
+2020-11-19 20:54:19.916 halo-blog [main] INFO  c.e.evaluation.EvaluationApplication - Started EvaluationApplication in 3.36 seconds (JVM running for 4.371)
