@@ -3,7 +3,6 @@ package com.evildoer.evaluation.controller;
 
 import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.model.entity.User;
-import com.evildoer.evaluation.model.form.ChangePassword;
 import com.evildoer.evaluation.model.form.UserQuery;
 import com.evildoer.evaluation.model.vo.UserVo;
 import com.evildoer.evaluation.service.IUserService;
@@ -26,28 +25,6 @@ public class UserController {
 
     public UserController(IUserService userService) {
         this.userService = userService;
-    }
-
-    @PostMapping("/login")
-    public ServerResponse login(@NotNull @RequestBody User user) {
-        return this.userService.login(user.getUsername(), user.getPassword());
-    }
-
-    @PostMapping("/register")
-    public ServerResponse register(@RequestBody User user) {
-        return this.userService.register(user);
-    }
-
-    /**
-     * @Author 安羽兮
-     * @Description 修改密码
-     * @Date 10:33 2020/7/15
-     * @Param [changePassword]
-     * @Return com.explore.common.ServerResponse
-     **/
-    @PostMapping("/change-password")
-    public ServerResponse changePassword(@NotNull @RequestBody ChangePassword changePassword) {
-        return this.userService.changePassword(changePassword);
     }
 
     /**

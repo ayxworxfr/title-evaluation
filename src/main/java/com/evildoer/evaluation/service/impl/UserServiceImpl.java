@@ -6,9 +6,14 @@ import com.evildoer.evaluation.common.authentication.JWTUtil;
 import com.evildoer.evaluation.common.domain.Const;
 import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.dao.UserMapper;
+import com.evildoer.evaluation.model.entity.Person;
+import com.evildoer.evaluation.model.entity.Unit;
 import com.evildoer.evaluation.model.entity.User;
 import com.evildoer.evaluation.model.form.ChangePassword;
+import com.evildoer.evaluation.model.form.UnitRegisterForm;
 import com.evildoer.evaluation.model.vo.UserVo;
+import com.evildoer.evaluation.service.IPersonService;
+import com.evildoer.evaluation.service.IUnitService;
 import com.evildoer.evaluation.service.IUserService;
 import com.sun.istack.internal.NotNull;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +35,15 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
+    private final IUnitService unitService;
+
+    private final IPersonService personService;
+
+    public UserServiceImpl(IUnitService unitService, IPersonService personService) {
+        this.unitService = unitService;
+        this.personService = personService;
+    }
+
     @Override
     public ServerResponse login(String username, String password) {
         if (StringUtils.isEmpty(username)) {
@@ -42,19 +56,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 .eq(User::getPassword, password);
         User user = this.getOne(queryWrapper);
         if (null != user) {          // 登录成功
-            // 使用用户id注册token, 使用用户密码加密
-            String token = JWTUtil.encryptToken(JWTUtil.sign(user.getId().toString(), password));
-            UserVo userVo = new UserVo();
-            userVo.setToken(token);
-            BeanUtils.copyProperties(user, userVo);
-            userVo.setPassword("");
-//            userVo.setRoles(roleService.getRoles(user.getId()));
+            UserVo userVo = getUserVoByUser(user);
             return ServerResponse.createBySuccessMessage("login success", userVo);
         }
         // 登录失败
         return ServerResponse.createByErrorMessage("用户名或密码错误");
     }
 
+
+    /**
+     * @Author 安羽兮
+     * @Description 个人账户注册
+     * @Date 10:05 2020/11/20
+     * @Param [user]
+     * @Return com.evildoer.evaluation.common.domain.ServerResponse
+     **/
     @Override
     public ServerResponse register(User user) {
         if (null == user) {
@@ -64,16 +80,98 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         } else if (StringUtils.isEmpty(user.getPassword())) {
             return ServerResponse.createByErrorMessage("密码不能为空!");
         }
-        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(User::getUsername, user.getUsername());
-        if (this.getOne(queryWrapper) != null) {
-            return ServerResponse.createByErrorMessage("该用户名已被使用!");
-        }
+        if (usernameIsExist(user.getUsername()))
+            ServerResponse.createByErrorMessage("该用户名已被使用!");
+        user.setType(Const.Role.PERSON.getCode());
         save(user);
-        user.setPassword("");
-        UserVo userVo = new UserVo();
-        BeanUtils.copyProperties(user, userVo);
+        UserVo userVo = getUserVoByUser(user);
         return ServerResponse.createBySuccessMessage("register success", userVo);
+    }
+
+    @Override
+    public ServerResponse unitRegisterForm(UnitRegisterForm data) {
+        if (usernameIsExist(data.getUsername()))
+            ServerResponse.createByErrorMessage("该用户名已被使用!");
+        Unit unit = new Unit();
+        User user = new User();
+        BeanUtils.copyProperties(data, unit);
+        unitService.saveOrUpdate(unit);
+        user.setUsername(data.getUsername());
+        user.setPassword(data.getPassword());
+        user.setType(Const.Role.UNIT.getCode());        // 设置用户类型为单位用户
+        user.setUnitId(unit.getId());
+
+        save(user);
+        if (null != unit.getUserId())       // 将单位注册人和单位工作人双向绑定
+            unit.setUserId(user.getId());
+        UserVo userVo = getUserVoByUser(user);
+        return ServerResponse.createBySuccessMessage("register success", userVo);
+    }
+
+    /**
+     * @Author 安羽兮
+     * @Description 通过用户信息签署token, 返回UserVo
+     * @Date 9:47 2020/11/20
+     * @Param [user]
+     * @Return UserVo
+     **/
+    private UserVo getUserVoByUser(@NotNull User user) {
+        // 使用用户id注册token, 使用用户密码加密
+        String token = JWTUtil.encryptToken(JWTUtil.sign(user.getId().toString(), user.getPassword()));
+        UserVo userVo = new UserVo();
+        userVo.setToken(token);
+        BeanUtils.copyProperties(user, userVo);
+        userVo.setPassword(Const.PASSWORD);
+        // 通过type属性获取角色名称
+        userVo.setRole(Const.Role.values()[user.getType()].getRole());
+        return userVo;
+    }
+
+    /**
+     * @Author 安羽兮
+     * @Description 用户名是否已经被使用
+     * @Date 9:41 2020/11/20
+     * @Param [username]
+     * @Return boolean
+     **/
+    @Override
+    public boolean usernameIsExist(String username) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(User::getUsername, username);
+        if (this.getOne(queryWrapper) != null) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public ServerResponse findUserByIdCard(String idcard) {
+        LambdaQueryWrapper<Person> query = new LambdaQueryWrapper<>();
+        query.eq(Person::getIdcard, idcard);
+        User user = null;
+        Person person = personService.getOne(query);
+        if (null != person) {
+            LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
+            queryWrapper.eq(User::getPersonId, person.getId());
+            user = this.getOne(queryWrapper);
+        }
+        if (null != person && null != user) {
+            user.setPassword(Const.PASSWORD);
+            return ServerResponse.createBySuccess(user);
+        }
+        return ServerResponse.createByErrorMessage("该用户不存在！");
+    }
+
+    @Override
+    public ServerResponse addUserToBranch(Long id, Long userId) {
+        User user = this.getById(userId);
+        if (null == user)
+            return ServerResponse.createByErrorMessage("该用户不存在！");
+        if (null != user.getBranchId())
+            return ServerResponse.createByErrorMessage("该用户已经有所属分公司！");
+        user.setBranchId(id);
+        this.updateById(user);
+        return ServerResponse.createBySuccess("添加成功");
     }
 
     @Override

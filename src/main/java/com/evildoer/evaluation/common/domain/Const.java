@@ -14,15 +14,37 @@ public class Const {
      * @Description 用户角色
      * @Date 20:07 2020/11/19
      **/
-    public static final String ADMIN = "admin";         // 管理员
+    public enum Role {
+        ADMIN(0, "admin"),      // 管理员
+        UNIT(1, "unit"),        // 公司管理员
+        BRANCH(2, "branch"),    // 分公司管理员
+        USER(3, "user"),        // 分公司员工
+        PERSON(4, "person");    // 个人账户
 
-    public static final String UNIT = "unit";           // 公司管理员
+        private int code;
+        private String role;
 
-    public static final String BRANCH = "branch";       // 分公司管理员
+        Role(int code, String role) {
+            this.code = code;
+            this.role = role;
+        }
 
-    public static final String USER = "user";           // 员工
+        public int getCode() {
+            return code;
+        }
 
-    public static final String PERSON = "person";       // 个人账户
+        public void setCode(int code) {
+            this.code = code;
+        }
+
+        public String getRole() {
+            return role;
+        }
+
+        public void setRole(String role) {
+            this.role = role;
+        }
+    }
 
     public static final String PASSWORD = "It's a secret!";
 
@@ -36,4 +58,13 @@ public class Const {
     public static final String TOKEN_CACHE_PREFIX = "evaluation.cache.token";
 
 
+    /**
+     * 上传图片类型
+     **/
+    // 单位签章
+    public static final String UNIT_SIGNATURE = "unit_signature";
+    // 单位手持身份证照片
+    public static final String UNIT_IMAGE = "unit_image";
+    // 单位营业执照图片
+    public static final String LINCENSE = "license";
 }

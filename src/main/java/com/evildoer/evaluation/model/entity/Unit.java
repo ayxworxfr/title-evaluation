@@ -20,6 +20,9 @@ public class Unit extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 单位名称
+     **/
     private String name;
 
     /**

@@ -20,6 +20,7 @@ public class BranchOffice extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
+    // 分公司名称
     private String name;
 
     private Long unitId;
@@ -30,6 +31,5 @@ public class BranchOffice extends BaseEntity {
      * 分公司签章URL
      */
     private String signature;
-
 
 }

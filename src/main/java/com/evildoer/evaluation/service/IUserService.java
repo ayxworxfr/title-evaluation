@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.model.entity.User;
 import com.evildoer.evaluation.model.form.ChangePassword;
+import com.evildoer.evaluation.model.form.UnitRegisterForm;
 import com.evildoer.evaluation.model.vo.UserVo;
 import com.sun.istack.internal.NotNull;
 
@@ -36,4 +37,19 @@ public interface IUserService extends IService<User> {
     void updateUserRole(UserVo userVo);
 
     ServerResponse updateByUserVo(UserVo userVo);
+
+    ServerResponse unitRegisterForm(UnitRegisterForm data);
+
+    /**
+     * @Author 安羽兮
+     * @Description 用户名是否已经被使用
+     * @Date 9:41 2020/11/20
+     * @Param [username]
+     * @Return boolean
+     **/
+    public boolean usernameIsExist(String username);
+
+    ServerResponse findUserByIdCard(String idcard);
+
+    ServerResponse addUserToBranch(Long userId, Long branchId);
 }

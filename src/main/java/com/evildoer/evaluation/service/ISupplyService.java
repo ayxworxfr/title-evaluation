@@ -1,7 +1,10 @@
 package com.evildoer.evaluation.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.model.entity.Supply;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.evildoer.evaluation.model.entity.Supply;
  */
 public interface ISupplyService extends IService<Supply> {
 
+    ServerResponse upload(MultipartFile file);
+
+    ResponseEntity show(String fileName);
 }
