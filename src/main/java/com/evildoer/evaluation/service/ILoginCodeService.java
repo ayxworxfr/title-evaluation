@@ -1,7 +1,9 @@
 package com.evildoer.evaluation.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.model.entity.LoginCode;
+import com.evildoer.evaluation.model.form.CodeForm;
 
 /**
  * <p>
@@ -13,4 +15,7 @@ import com.evildoer.evaluation.model.entity.LoginCode;
  */
 public interface ILoginCodeService extends IService<LoginCode> {
 
+    ServerResponse loginByCode(CodeForm code);
+
+    ServerResponse removeByCode(Long code);
 }

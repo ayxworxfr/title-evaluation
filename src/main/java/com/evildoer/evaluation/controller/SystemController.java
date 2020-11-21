@@ -1,6 +1,7 @@
 package com.evildoer.evaluation.controller;
 
 
+import com.evildoer.evaluation.common.domain.Const;
 import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.model.entity.User;
 import com.evildoer.evaluation.model.form.ChangePassword;
@@ -131,6 +132,7 @@ public class SystemController {
      **/
     @PostMapping("/upload")
     public ServerResponse upload(@RequestParam("file") MultipartFile file, String prefix) {
+        Const.Role[] roles = Const.Role.values();
         Map<String, String> result = UploadUtils.upload(file, prefix);
         if (null != result)
             return ServerResponse.createBySuccess(result);

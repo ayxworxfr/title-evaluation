@@ -116,14 +116,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * @Return UserVo
      **/
     private UserVo getUserVoByUser(@NotNull User user) {
-        // 使用用户id注册token, 使用用户密码加密
-        String token = JWTUtil.encryptToken(JWTUtil.sign(user.getId().toString(), user.getPassword()));
+        // 使用用户id+role注册token, 使用用户密码加密
+        String role = Const.Role.values()[user.getType()].getRole();
+        String token = JWTUtil.encryptToken(JWTUtil.sign(user.getId().toString() + "," + role, user.getPassword()));
         UserVo userVo = new UserVo();
         userVo.setToken(token);
         BeanUtils.copyProperties(user, userVo);
         userVo.setPassword(Const.PASSWORD);
         // 通过type属性获取角色名称
-        userVo.setRole(Const.Role.values()[user.getType()].getRole());
+        userVo.setRole(role);
         return userVo;
     }
 
@@ -219,14 +220,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public String flushToken(@NotNull String token) {
-        User user = getById(this.getUserIdByToken(token));
+        String data = this.getDataByToken(token);
+        User user = getById(data.split(",")[0]);
         // 用户信息获取失败
         if (user == null) {
             return null;
         }
         // 用户信息获取成功
-        // 使用用户id重新注册token, 使用用户密码加密
-        String newToken = JWTUtil.encryptToken(JWTUtil.sign(user.getId().toString(), user.getPassword()));
+        // 使用用户id+role重新注册token, 使用用户密码加密
+        String newToken = JWTUtil.encryptToken(JWTUtil.sign(data, user.getPassword()));
         return newToken;
     }
 
@@ -253,13 +255,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * @Description 通过token获取用户id
      * @Date 11:37 2020/6/30
      * @Param []
-     * @Return java.lang.Long
+     * @Return java.lang.String
      **/
     @Override
-    public Long getUserIdByToken() {
+    public String getDataByToken() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String token = request.getHeader(Const.TOKEN);
-        return getUserIdByToken(token);
+        return getDataByToken(token);
     }
 
     /**
@@ -267,21 +269,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * @Description 直接解析传入的token
      * @Date 14:30 2020/7/16
      * @Param [token]
-     * @Return java.lang.Long
+     * @Return java.lang.String
      **/
     @Override
-    public Long getUserIdByToken(String token) {
+    public String getDataByToken(String token) {
         if (StringUtils.isEmpty(token))
 //            throw new AuthenticationException("请登录后访问！");
             return null;
         token = JWTUtil.decryptToken(token);            // 解密token
-        String id = JWTUtil.getName(token);
-        User user = this.getById(id);
+        String data = JWTUtil.getName(token);
+        User user = this.getById(data.split(",")[0]);
         // 校验token是否合法
-        if (!JWTUtil.verify(token, id, user.getPassword()))
+        if (!JWTUtil.verify(token, data, user.getPassword()))
 //            throw new AuthenticationException("token校验不通过");
             return null;
-        return Long.parseLong(id);
+        return data;
     }
 
     /**

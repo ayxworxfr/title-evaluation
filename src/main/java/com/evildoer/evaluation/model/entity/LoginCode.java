@@ -32,6 +32,4 @@ public class LoginCode extends BaseEntity {
     private String jury;
 
     private LocalDateTime failureTime;
-
-
 }

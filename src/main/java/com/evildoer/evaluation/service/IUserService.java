@@ -20,9 +20,9 @@ public interface IUserService extends IService<User> {
 
     ServerResponse login(String username, String password);
 
-    Long getUserIdByToken();
+    String getDataByToken();
 
-    Long getUserIdByToken(String token);
+    String getDataByToken(String token);
 
     ServerResponse register(User user);
 

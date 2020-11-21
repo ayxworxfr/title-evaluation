@@ -19,7 +19,8 @@ public class Const {
         UNIT(1, "unit"),        // 公司管理员
         BRANCH(2, "branch"),    // 分公司管理员
         USER(3, "user"),        // 分公司员工
-        PERSON(4, "person");    // 个人账户
+        PERSON(4, "person"),    // 个人账户
+        JURY(5, "jury");        // 评审员通过code登录
 
         private int code;
         private String role;
