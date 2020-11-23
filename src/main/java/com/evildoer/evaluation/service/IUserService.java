@@ -52,4 +52,5 @@ public interface IUserService extends IService<User> {
     ServerResponse findUserByIdCard(String idcard);
 
     ServerResponse addUserToBranch(Long userId, Long branchId);
+
 }
