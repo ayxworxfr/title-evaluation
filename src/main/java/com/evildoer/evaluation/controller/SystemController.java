@@ -4,7 +4,9 @@ package com.evildoer.evaluation.controller;
 import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.model.entity.User;
 import com.evildoer.evaluation.model.form.ChangePassword;
+import com.evildoer.evaluation.model.form.LoginForm;
 import com.evildoer.evaluation.model.form.UnitRegisterForm;
+import com.evildoer.evaluation.service.IUnitService;
 import com.evildoer.evaluation.service.IUserService;
 import com.evildoer.evaluation.utils.UploadUtils;
 import com.sun.istack.internal.NotNull;
@@ -12,6 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,26 +36,31 @@ public class SystemController {
 
     private final IUserService userService;
 
+    private final IUnitService unitService;
+
     private final ResourceLoader resourceLoader;
 
-    public SystemController(IUserService userService, ResourceLoader resourceLoader) {
+    public SystemController(IUserService userService, IUnitService unitService, ResourceLoader resourceLoader) {
         this.userService = userService;
+        this.unitService = unitService;
         this.resourceLoader = resourceLoader;
     }
 
     @PostMapping("/login")
     @ApiOperation(value = "登录", notes = "评估登录接口", httpMethod = "POST")
     public ServerResponse login(
-            @ApiParam(name = "user", value = "传入json格式", required = true)
-            @NotNull @RequestBody User user) {
+            @ApiParam(name = "userForm", value = "传入json格式", required = true)
+            @NotNull @RequestBody LoginForm loginForm) {
 //        //校验验证码
 //        //session中的验证码
 //        String sessionCaptcha = (String) SecurityUtils.getSubject().getSession().getAttribute(CaptchaController.KEY_CAPTCHA);
 //        if (null == captcha || !captcha.equalsIgnoreCase(sessionCaptcha)) {
 //            return CommonResult.failed("验证码错误");
 //        }
+        User user = new User();
+        BeanUtils.copyProperties(loginForm, user);
 
-        return this.userService.login(user.getUsername(), user.getPassword());
+        return this.userService.login(user);
     }
 
 
@@ -66,9 +74,9 @@ public class SystemController {
     @ApiOperation(value = "单位登录", notes = "单位登录接口", httpMethod = "POST")
     @PostMapping("/unit-login")
     public ServerResponse unitLogin(
-            @ApiParam(name = "user", value = "传入json格式", required = true)
-            @NotNull @RequestBody User user) {
-        return this.userService.login(user.getUsername(), user.getPassword());
+            @ApiParam(name = "userForm", value = "传入json格式", required = true)
+            @NotNull @RequestBody LoginForm loginForm) {
+        return this.userService.unitLogin(loginForm);
     }
 
     /**

@@ -10,6 +10,7 @@ import com.evildoer.evaluation.model.entity.Person;
 import com.evildoer.evaluation.model.entity.Unit;
 import com.evildoer.evaluation.model.entity.User;
 import com.evildoer.evaluation.model.form.ChangePassword;
+import com.evildoer.evaluation.model.form.LoginForm;
 import com.evildoer.evaluation.model.form.UnitRegisterForm;
 import com.evildoer.evaluation.model.vo.UserVo;
 import com.evildoer.evaluation.service.IPersonService;
@@ -45,15 +46,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public ServerResponse login(String username, String password) {
-        if (StringUtils.isEmpty(username)) {
+    public ServerResponse login(User u) {
+        if (StringUtils.isEmpty(u.getUsername())) {
             return ServerResponse.createByErrorMessage("用户名不能为空!");
-        } else if (StringUtils.isEmpty(password)) {
+        } else if (StringUtils.isEmpty(u.getPassword())) {
             return ServerResponse.createByErrorMessage("密码不能为空!");
         }
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(User::getUsername, username)
-                .eq(User::getPassword, password);
+        queryWrapper.eq(User::getUsername, u.getUsername())
+                .eq(User::getPassword, u.getPassword());
         User user = this.getOne(queryWrapper);
         if (null != user) {          // 登录成功
             UserVo userVo = getUserVoByUser(user);
@@ -173,6 +174,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setBranchId(id);
         this.updateById(user);
         return ServerResponse.createBySuccess("添加成功");
+    }
+
+    @Override
+    public ServerResponse unitLogin(LoginForm loginForm) {
+        // 校验该单位是否有此用户
+        Unit unit = unitService.getByName(loginForm.getUnit());
+        if (null != unit)
+            loginForm.setUnitId(unit.getId());
+        User user = new User();
+        BeanUtils.copyProperties(loginForm, user);
+        return this.login(user);
     }
 
     @Override

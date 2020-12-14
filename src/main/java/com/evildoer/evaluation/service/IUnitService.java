@@ -15,5 +15,7 @@ import com.github.pagehelper.PageInfo;
  */
 public interface IUnitService extends IService<Unit> {
 
+    Unit getByName(String name);
+
     PageInfo<Unit> pageByQuery(UnitQuery query);
 }

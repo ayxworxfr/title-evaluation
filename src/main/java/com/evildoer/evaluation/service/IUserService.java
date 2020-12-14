@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.model.entity.User;
 import com.evildoer.evaluation.model.form.ChangePassword;
+import com.evildoer.evaluation.model.form.LoginForm;
 import com.evildoer.evaluation.model.form.UnitRegisterForm;
 import com.evildoer.evaluation.model.vo.UserVo;
 import com.sun.istack.internal.NotNull;
@@ -18,7 +19,7 @@ import com.sun.istack.internal.NotNull;
  */
 public interface IUserService extends IService<User> {
 
-    ServerResponse login(String username, String password);
+    ServerResponse login(User user);
 
     String getDataByToken();
 
@@ -53,4 +54,5 @@ public interface IUserService extends IService<User> {
 
     ServerResponse addUserToBranch(Long userId, Long branchId);
 
+    ServerResponse unitLogin(LoginForm loginForm);
 }

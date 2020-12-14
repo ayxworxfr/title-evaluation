@@ -2,7 +2,6 @@ package com.evildoer.evaluation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.evildoer.evaluation.common.domain.BasePage;
 import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.dao.PersonMapper;
 import com.evildoer.evaluation.model.entity.Person;
@@ -28,14 +27,13 @@ import java.util.List;
 public class PersonServiceImpl extends ServiceImpl<PersonMapper, Person> implements IPersonService {
 
 
-
     @Override
     public PageInfo<Person> pageByQuery(PersonQuery query) {
         LambdaQueryWrapper<Person> queryWrapper = new LambdaQueryWrapper<>();
-        if (StringUtils.isNotEmpty(query.getPhone())){
+        if (StringUtils.isNotEmpty(query.getPhone())) {
             queryWrapper.like(Person::getPhone, query.getPhone());
         }
-        if(query.getPersonId()!=-1){
+        if (null != query.getPersonId() && query.getPersonId() != -1) {
             queryWrapper.like(Person::getId, query.getPersonId());
         }
         PageHelper.startPage(query.getPage(), query.getPageSize());
@@ -48,7 +46,7 @@ public class PersonServiceImpl extends ServiceImpl<PersonMapper, Person> impleme
         person.setCreateTime(LocalDateTime.now());
         person.setUpdateTime(LocalDateTime.now());
         boolean result = save(person);
-        if(result)
+        if (result)
             return ServerResponse.createBySuccess("添加成功");
         return ServerResponse.createByError();
     }

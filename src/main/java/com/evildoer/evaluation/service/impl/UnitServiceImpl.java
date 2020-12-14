@@ -11,6 +11,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -23,6 +24,13 @@ import java.util.List;
  */
 @Service
 public class UnitServiceImpl extends ServiceImpl<UnitMapper, Unit> implements IUnitService {
+
+    @Override
+    public Unit getByName(@NotNull String name) {
+        LambdaQueryWrapper<Unit> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Unit::getName, name);
+        return this.getOne(queryWrapper);
+    }
 
     @Override
     public PageInfo<Unit> pageByQuery(UnitQuery query) {
