@@ -5,6 +5,10 @@ import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.model.entity.LoginCode;
 import com.evildoer.evaluation.model.form.CodeForm;
 import com.evildoer.evaluation.service.ILoginCodeService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +39,7 @@ public class LoginCodeController {
      * @Param [userId]
      * @Return com.explore.common.ServerResponse
      **/
+    @ApiOperation(value = "添加用户", notes = "添加用户接口", httpMethod = "POST")
     @PostMapping("/add")
     public ServerResponse add(@NotNull @RequestBody CodeForm code) {
         LoginCode loginCode = new LoginCode();
@@ -52,11 +57,18 @@ public class LoginCodeController {
      * @Param [id]
      * @Return com.explore.common.ServerResponse
      **/
-    @GetMapping("/login")
-    public ServerResponse loginByCode(@RequestBody CodeForm code) {
+    @ApiOperation(value = "通过code登录", notes = "通过code登录接口", httpMethod = "POST")
+    @PostMapping("/login")
+    public ServerResponse loginByCode(
+            @ApiParam(name = "code", value = "传入json格式", required = true)
+            @RequestBody CodeForm code) {
         return loginCodeService.loginByCode(code);
     }
 
+    @ApiOperation(value = "通过code登录", notes = "通过code登录接口", httpMethod = "DELETE")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "code", value = "登录码", required = true, paramType = "form"),
+    })
     @DeleteMapping("/delete/{code:\\d+}")
     public ServerResponse delete(@PathVariable("code") Long code) {
         return loginCodeService.removeByCode(code);

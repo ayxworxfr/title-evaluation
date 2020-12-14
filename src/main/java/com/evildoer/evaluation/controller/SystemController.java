@@ -1,7 +1,6 @@
 package com.evildoer.evaluation.controller;
 
 
-import com.evildoer.evaluation.common.domain.Const;
 import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.model.entity.User;
 import com.evildoer.evaluation.model.form.ChangePassword;
@@ -9,6 +8,10 @@ import com.evildoer.evaluation.model.form.UnitRegisterForm;
 import com.evildoer.evaluation.service.IUserService;
 import com.evildoer.evaluation.utils.UploadUtils;
 import com.sun.istack.internal.NotNull;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +41,10 @@ public class SystemController {
     }
 
     @PostMapping("/login")
-    public ServerResponse login(@NotNull @RequestBody User user) {
+    @ApiOperation(value = "登录", notes = "评估登录接口", httpMethod = "POST")
+    public ServerResponse login(
+            @ApiParam(name = "user", value = "传入json格式", required = true)
+            @NotNull @RequestBody User user) {
 //        //校验验证码
 //        //session中的验证码
 //        String sessionCaptcha = (String) SecurityUtils.getSubject().getSession().getAttribute(CaptchaController.KEY_CAPTCHA);
@@ -57,8 +63,11 @@ public class SystemController {
      * @Param [user]
      * @Return com.evildoer.evaluation.common.domain.ServerResponse
      **/
+    @ApiOperation(value = "单位登录", notes = "单位登录接口", httpMethod = "POST")
     @PostMapping("/unit-login")
-    public ServerResponse unitLogin(@NotNull @RequestBody User user) {
+    public ServerResponse unitLogin(
+            @ApiParam(name = "user", value = "传入json格式", required = true)
+            @NotNull @RequestBody User user) {
         return this.userService.login(user.getUsername(), user.getPassword());
     }
 
@@ -69,8 +78,11 @@ public class SystemController {
      * @Param [user]
      * @Return com.evildoer.evaluation.common.domain.ServerResponse
      **/
+    @ApiOperation(value = "个人用户注册", notes = "个人用户注册接口", httpMethod = "POST")
     @PostMapping("/register")
-    public ServerResponse register(@RequestBody User user) {
+    public ServerResponse register(
+            @ApiParam(name = "user", value = "传入json格式", required = true)
+            @RequestBody User user) {
         return this.userService.register(user);
     }
 
@@ -81,6 +93,7 @@ public class SystemController {
      * @Param [user]
      * @Return com.evildoer.evaluation.common.domain.ServerResponse
      **/
+    @ApiOperation(value = "单位用户注册", notes = "单位用户注册接口", httpMethod = "POST")
     @PostMapping("/unit-register")
     public ServerResponse register(@RequestBody UnitRegisterForm data) {
         return this.userService.unitRegisterForm(data);
@@ -93,6 +106,10 @@ public class SystemController {
      * @Param [branchForm]
      * @Return com.evildoer.evaluation.common.domain.ServerResponse
      **/
+    @ApiOperation(value = "通过IDCard查找用户", notes = "通过IDCard查找用户接口", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "idcard", value = "身份证", required = true, paramType = "form"),
+    })
     @PostMapping("/findUserByIdCard")
     public ServerResponse findUserByIdCard(String idcard) {
         return this.userService.findUserByIdCard(idcard);
@@ -105,6 +122,10 @@ public class SystemController {
      * @Param [id 分公司id, userId 用户id]
      * @Return com.evildoer.evaluation.common.domain.ServerResponse
      **/
+    @ApiOperation(value = "添加用户到分公司", notes = "添加用户到分公司接口", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户id", required = true, paramType = "form"),
+    })
     @PostMapping("/addUserToBranch/{id:\\d+}")
     public ServerResponse addUserToBranch(@PathVariable("id") Long id, Long userId) {
         return this.userService.addUserToBranch(id, userId);
@@ -117,8 +138,11 @@ public class SystemController {
      * @Param [changePassword]
      * @Return com.explore.common.ServerResponse
      **/
+    @ApiOperation(value = "修改密码", notes = "修改密码", httpMethod = "POST")
     @PostMapping("/change-password")
-    public ServerResponse changePassword(@NotNull @RequestBody ChangePassword changePassword) {
+    public ServerResponse changePassword(
+            @ApiParam(name = "changePassword", value = "传入json格式", required = true)
+            @NotNull @RequestBody ChangePassword changePassword) {
         return this.userService.changePassword(changePassword);
     }
 
@@ -130,9 +154,13 @@ public class SystemController {
      * @Param [file, prefix 期望图片保存名称前缀]
      * @Return com.evildoer.evaluation.common.domain.ServerResponse
      **/
+    @ApiOperation(value = "上传图片", notes = "上传图片接口", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "file", value = "文件", required = true, paramType = "form"),
+            @ApiImplicitParam(name = "prefix", value = "文件保存前缀", example = "unit", required = true, paramType = "form"),
+    })
     @PostMapping("/upload")
     public ServerResponse upload(@RequestParam("file") MultipartFile file, String prefix) {
-        Const.Role[] roles = Const.Role.values();
         Map<String, String> result = UploadUtils.upload(file, prefix);
         if (null != result)
             return ServerResponse.createBySuccess(result);
@@ -142,6 +170,10 @@ public class SystemController {
     /**
      * 显示单张图片
      */
+    @ApiOperation(value = "显示单张图片", notes = "显示单张图片接口", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "fileName", value = "文件名称", required = true, paramType = "form"),
+    })
     @GetMapping("/show/{fileName}")
     public ResponseEntity showPhotos(@PathVariable("fileName") String fileName) {
         return UploadUtils.show(fileName, resourceLoader);

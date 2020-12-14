@@ -5,9 +5,9 @@ spring:
   uploadPath: D:\upload\
   servlet:
     multipart:
-      #µ¥¸öÊı¾İµÄ´óĞ¡
+      #å•ä¸ªæ•°æ®çš„å¤§å°
       max-file-size: 100MB
-      #×ÜÊı¾İµÄ´óĞ¡
+      #æ€»æ•°æ®çš„å¤§å°
       max-request-size: 100MB
       enabled: true
       file-size-threshold: 0
@@ -23,12 +23,26 @@ spring:
       min-idle: 5
       max-active: 20
 
-#pagehelper·ÖÒ³²å¼şÅäÖÃ
+#pagehelperåˆ†é¡µæ’ä»¶é…ç½®
 pagehelper:
   helperDialect: mysql
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+
+
+web:
+  # Swaggerç›¸å…³é…ç½®
+  swagger:
+    basePackage: com.evildoer.evaluation
+    title: EVALUATION API
+    description: EVALUATION VUE API Document.
+    version: 1.0
+    author: evildoer
+    url: https://baidu.com
+    email: 123456@qq.com
+    license: Apache 2.0
+    licenseUrl: https://www.apache.org/licenses/LICENSE-2.0.html
 
 mybatis-plus:
   configuration:
