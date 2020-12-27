@@ -43,4 +43,5 @@ public class SupplyServiceImpl extends ServiceImpl<SupplyMapper, Supply> impleme
     public ResponseEntity show(String fileName) {
         return UploadUtils.show(fileName, resourceLoader);
     }
+
 }

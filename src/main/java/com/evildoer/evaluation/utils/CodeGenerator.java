@@ -30,7 +30,7 @@ public class CodeGenerator {
     private final static String TEMPLATE_PATH = "/templates/mapper.xml.ftl";
 
     //    private final static String TABLE_NAMES = "person,unit,user";
-    private final static String TABLE_NAMES = "supply,branch_office,login_code,evaluation,person,unit,user";
+    private final static String TABLE_NAMES = "abroad,achievement,award,experience,other,paper,patent,qualification,study,supply,train_person";
 //    private final static String TABLE_NAMES = "base,branch_office,code,evaluation,jury,person,unit,user";
     /**
      SELECT TABLE_NAME
