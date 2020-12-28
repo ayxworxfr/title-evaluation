@@ -72,9 +72,9 @@ public class EvaluationController {
      *@data 2020/11/23
      *description:
      */
-    @DeleteMapping("/delete/{person_id:\\d+}")
-    public ServerResponse delete(@PathVariable("person_id") Long personId) {
-        Boolean result = evaluationService.removeById(personId);
+    @DeleteMapping("/delete/{id:\\d+}")
+    public ServerResponse delete(@PathVariable("id") Long id) {
+        Boolean result = evaluationService.removeById(id);
         if (result) {
             return ServerResponse.createBySuccess("删除成功");
         } else {

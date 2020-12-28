@@ -1,7 +1,10 @@
 package com.evildoer.evaluation.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.model.entity.Study;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.evildoer.evaluation.model.entity.Study;
  */
 public interface IStudyService extends IService<Study> {
 
+    ServerResponse addStudy(Study study);
+
+    List<Study> listEvaluation(long evaluation_id);
 }

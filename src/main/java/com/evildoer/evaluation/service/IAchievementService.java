@@ -1,7 +1,10 @@
 package com.evildoer.evaluation.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.model.entity.Achievement;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.evildoer.evaluation.model.entity.Achievement;
  */
 public interface IAchievementService extends IService<Achievement> {
 
+    List<Achievement> listEvaluation(long evaluation_id);
+
+    ServerResponse addExperience(Achievement achievement);
 }
