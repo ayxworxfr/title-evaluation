@@ -1,12 +1,14 @@
 package com.evildoer.evaluation.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.evildoer.evaluation.common.domain.BasePage;
 import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.dao.EvaluationMapper;
 import com.evildoer.evaluation.model.entity.Evaluation;
+import com.evildoer.evaluation.model.entity.Supply;
 import com.evildoer.evaluation.model.form.EvaluationQuery;
 import com.evildoer.evaluation.model.vo.EvaluationVo;
 import com.evildoer.evaluation.service.IEvaluationService;
@@ -61,6 +63,14 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationMapper, Evaluat
     public ServerResponse addEvaluation(Evaluation evaluation) {
         evaluation.setCreateTime(LocalDateTime.now());
         evaluation.setUpdateTime(LocalDateTime.now());
+        Supply supply = new Supply();
+        supply.setCreateTime(LocalDateTime.now());
+        if(supplyService.save(supply)) {
+            QueryWrapper<Supply> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().eq(Supply::getCreateTime, supply.getCreateTime());
+            List<Supply> supplies = supplyService.list(queryWrapper);
+            evaluation.setSupplyId(supplies.get(0).getId());
+        }
         boolean result = save(evaluation);
         if(result)
             return ServerResponse.createBySuccess("添加成功");
