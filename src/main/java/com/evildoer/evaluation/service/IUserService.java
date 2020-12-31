@@ -48,7 +48,7 @@ public interface IUserService extends IService<User> {
      * @Param [username]
      * @Return boolean
      **/
-    public boolean usernameIsExist(String username);
+    boolean usernameIsExist(String username);
 
     ServerResponse findUserByIdCard(String idcard);
 
