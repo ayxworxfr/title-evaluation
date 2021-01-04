@@ -5,8 +5,10 @@ import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.model.entity.Unit;
 import com.evildoer.evaluation.model.form.UnitQuery;
 import com.evildoer.evaluation.service.IUnitService;
-import com.sun.istack.internal.NotNull;
+import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -26,14 +28,15 @@ public class UnitController {
     }
 
     /**
+     * @return
      * @Author 安羽兮
      * @Description 返回列表
      * @Date 9:58 2020/11/22
      * @Param [page, limit]
      * @Return com.explore.common.ServerResponse
-     **/
+     */
     @GetMapping("/list")
-    public ServerResponse list(UnitQuery query) {
+    public ServerResponse<PageInfo<Unit>> list(UnitQuery query) {
         return ServerResponse.createBySuccess(unitService.pageByQuery(query));
     }
 

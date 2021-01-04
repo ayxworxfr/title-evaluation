@@ -16,7 +16,6 @@ import com.evildoer.evaluation.model.vo.UserVo;
 import com.evildoer.evaluation.service.IPersonService;
 import com.evildoer.evaluation.service.IUnitService;
 import com.evildoer.evaluation.service.IUserService;
-import com.sun.istack.internal.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -24,6 +23,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>

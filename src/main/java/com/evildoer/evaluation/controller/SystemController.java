@@ -9,7 +9,6 @@ import com.evildoer.evaluation.model.form.UnitRegisterForm;
 import com.evildoer.evaluation.service.IUnitService;
 import com.evildoer.evaluation.service.IUserService;
 import com.evildoer.evaluation.utils.UploadUtils;
-import com.sun.istack.internal.NotNull;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 /**

@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author evildoer
@@ -27,36 +27,37 @@ public class AbroadController {
     }
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @return
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @GetMapping("/list")
-    public ServerResponse list(@PathVariable("evaluation_id") long evaluation_id){
+    public ServerResponse<List<Abroad>> list(@PathVariable("evaluation_id") long evaluation_id) {
         List<Abroad> experiences = abroadService.listEvaluation(evaluation_id);
-        return  ServerResponse.createBySuccess(experiences);
+        return ServerResponse.createBySuccess(experiences);
     }
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @PostMapping("/add")
-    public ServerResponse add(@RequestBody Abroad abroad,@PathVariable("evaluation_id") long evaluation_id) {
+    public ServerResponse add(@RequestBody Abroad abroad, @PathVariable("evaluation_id") long evaluation_id) {
         abroad.setEvaluationId(evaluation_id);
         return this.abroadService.addExperience(abroad);
     }
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @GetMapping("/{id:\\d+}")
-    public ServerResponse getById(@PathVariable("id") Long id) {
+    public ServerResponse<Abroad> getById(@PathVariable("id") Long id) {
         Abroad abroad = abroadService.getById(id);
         if (null != abroad) {
             return ServerResponse.createBySuccess(abroad);
@@ -67,9 +68,9 @@ public class AbroadController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @DeleteMapping("/delete/{id:\\d+}")
     public ServerResponse delete(@PathVariable("id") Long id) {
@@ -83,17 +84,17 @@ public class AbroadController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @PutMapping("/{id:\\d+}")
     public ServerResponse updateById(@PathVariable("id") Integer id,
                                      @RequestBody Abroad abroad) {
         abroad.setId(id.longValue());
         abroad.setUpdateTime(LocalDateTime.now());
-        boolean result =abroadService.updateById(abroad);
-        if(result)
+        boolean result = abroadService.updateById(abroad);
+        if (result)
             return ServerResponse.createBySuccessMessage("修改成功");
         return ServerResponse.createByErrorMessage("修改失败");
     }

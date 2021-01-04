@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author evildoer
@@ -28,33 +28,34 @@ public class OtherController {
     }
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @return
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @GetMapping("/list")
-    public ServerResponse list(@PathVariable("evaluation_id") long evaluation_id){
+    public ServerResponse<List<Other>> list(@PathVariable("evaluation_id") long evaluation_id) {
         List<Other> experiences = otherService.listEvaluation(evaluation_id);
-        return  ServerResponse.createBySuccess(experiences);
+        return ServerResponse.createBySuccess(experiences);
     }
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @PostMapping("/add")
-    public ServerResponse add(@RequestBody Other other,@PathVariable("evaluation_id") long evaluation_id) {
+    public ServerResponse add(@RequestBody Other other, @PathVariable("evaluation_id") long evaluation_id) {
         other.setEvaluationId(evaluation_id);
         return this.otherService.addExperience(other);
     }
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @GetMapping("/{id:\\d+}")
     public ServerResponse getById(@PathVariable("id") Long id) {
@@ -68,9 +69,9 @@ public class OtherController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @DeleteMapping("/delete/{id:\\d+}")
     public ServerResponse delete(@PathVariable("id") Long id) {
@@ -84,17 +85,17 @@ public class OtherController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @PutMapping("/{id:\\d+}")
     public ServerResponse updateById(@PathVariable("id") Integer id,
                                      @RequestBody Other other) {
         other.setId(id.longValue());
         other.setUpdateTime(LocalDateTime.now());
-        boolean result =otherService.updateById(other);
-        if(result)
+        boolean result = otherService.updateById(other);
+        if (result)
             return ServerResponse.createBySuccessMessage("修改成功");
         return ServerResponse.createByErrorMessage("修改失败");
     }

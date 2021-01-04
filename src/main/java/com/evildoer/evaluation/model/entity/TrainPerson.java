@@ -1,13 +1,14 @@
 package com.evildoer.evaluation.model.entity;
 
 import com.evildoer.evaluation.common.domain.BaseEntity;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author evildoer
@@ -23,13 +24,16 @@ public class TrainPerson extends BaseEntity {
     /**
      * 材料名称
      */
+    @ApiModelProperty(value = "材料名称", required = true)
     private String name;
 
     /**
      * 材料图片
      */
+    @ApiModelProperty(value = "材料图片", required = true)
     private String proveUrl;
 
+    @ApiModelProperty(hidden = true)
     private Long evaluationId;
 
 
