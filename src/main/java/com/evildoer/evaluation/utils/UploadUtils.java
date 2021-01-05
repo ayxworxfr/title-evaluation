@@ -19,11 +19,11 @@ import java.util.UUID;
  **/
 public class UploadUtils {
 
-    @Value("${spring.uploadPath}")
-    private static String uploadPath;
+
+    private static String uploadPath = "img";
 
     // 文件实际保存名称前缀
-    private static String prefix = "";
+    private static String prefix = "sss";
 
     /**
      * @Author 安羽兮
@@ -55,7 +55,7 @@ public class UploadUtils {
      * @Return java.util.Map<java.lang.String, java.lang.String>
      **/
     public static Map<String, String> upload(MultipartFile file, String pre) {
-        prefix = pre;
+       // prefix = pre;
         // 图片路径
         return upload(file);
     }
@@ -63,7 +63,7 @@ public class UploadUtils {
     public static ResponseEntity show(String fileName, ResourceLoader resourceLoader) {
         try {
             // 由于是读取本机的文件，file是一定要加上的， path是在application配置文件中的路径
-            return ResponseEntity.ok(resourceLoader.getResource("file:" + uploadPath + fileName));
+            return ResponseEntity.ok(resourceLoader.getResource("file: D:\\title_img" + "/" + fileName));
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
@@ -71,10 +71,10 @@ public class UploadUtils {
 
     private static String upload(MultipartFile file, String path, String fileName) throws Exception {
         // 生成新的文件名
-        String realPath = path + "/" + prefix + UUID.randomUUID().toString().replace("-", "") + fileName.substring(fileName.lastIndexOf("."));
+        String realPath = "D:\\title_img"+"/" + prefix + UUID.randomUUID().toString().replace("-", "") + fileName.substring(fileName.lastIndexOf("."));
         File dest = new File(realPath);
         // 判断文件父目录是否存在
-        if (!dest.getParentFile().exists()) {
+        while (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdir();
         }
         // 保存文件
