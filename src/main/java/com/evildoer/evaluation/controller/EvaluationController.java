@@ -37,8 +37,8 @@ public class EvaluationController {
     public ServerResponse list(Integer userId){
         EvaluationQuery query = new EvaluationQuery();
         query.setUserId(userId);
-        query.setLevel(0);
-        query.setStatus(0);
+        query.setLevel(-1);
+        query.setStatus(-1);
         return ServerResponse.createBySuccess(evaluationService.pageByQuery(query));
     }
 
