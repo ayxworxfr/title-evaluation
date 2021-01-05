@@ -4,9 +4,7 @@ package com.evildoer.evaluation.controller;
 import com.evildoer.evaluation.common.domain.ServerResponse;
 import com.evildoer.evaluation.model.entity.Evaluation;
 import com.evildoer.evaluation.model.form.EvaluationQuery;
-import com.evildoer.evaluation.model.vo.EvaluationVo;
 import com.evildoer.evaluation.service.IEvaluationService;
-import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -39,6 +37,8 @@ public class EvaluationController {
     public ServerResponse list(Integer userId){
         EvaluationQuery query = new EvaluationQuery();
         query.setUserId(userId);
+        query.setLevel(0);
+        query.setStatus(0);
         return ServerResponse.createBySuccess(evaluationService.pageByQuery(query));
     }
 

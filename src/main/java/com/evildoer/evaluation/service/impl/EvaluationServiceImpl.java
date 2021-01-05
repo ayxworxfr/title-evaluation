@@ -53,7 +53,10 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationMapper, Evaluat
         if(query.getStatus()!=-1){
             queryWrapper.like(Evaluation::getStatus, query.getStatus());
         }
-        queryWrapper.eq(Evaluation::getUserId,query.getUserId());
+        if(query.getUserId()!=-1){
+            queryWrapper.eq(Evaluation::getUserId,query.getUserId());
+        }
+
         PageHelper.startPage(query.getPage(), query.getPageSize());
         List<Evaluation> list = this.list(queryWrapper);
         List<EvaluationVo> lists = convert(list);
@@ -87,7 +90,7 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationMapper, Evaluat
         List<EvaluationVo> evaluationVos = new ArrayList<>();
         for(Evaluation vo: list){
             EvaluationVo evaluationVo = new EvaluationVo();
-            BeanUtils.copyProperties(evaluationVo, vo);
+            BeanUtils.copyProperties(vo,evaluationVo);
             evaluationVo.setSupply(supplyService.getById(vo.getSupplyId()));
             evaluationVos.add(evaluationVo);
         }
