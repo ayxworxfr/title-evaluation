@@ -6,8 +6,9 @@ import com.evildoer.evaluation.model.entity.User;
 import com.evildoer.evaluation.model.form.UserQuery;
 import com.evildoer.evaluation.model.vo.UserVo;
 import com.evildoer.evaluation.service.IUserService;
-import com.sun.istack.internal.NotNull;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>

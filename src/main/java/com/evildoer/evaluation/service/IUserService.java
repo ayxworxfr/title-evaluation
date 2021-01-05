@@ -7,7 +7,8 @@ import com.evildoer.evaluation.model.form.ChangePassword;
 import com.evildoer.evaluation.model.form.LoginForm;
 import com.evildoer.evaluation.model.form.UnitRegisterForm;
 import com.evildoer.evaluation.model.vo.UserVo;
-import com.sun.istack.internal.NotNull;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>

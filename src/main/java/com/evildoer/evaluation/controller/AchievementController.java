@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author evildoer
@@ -28,33 +28,34 @@ public class AchievementController {
     }
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @return
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @GetMapping("/list")
-    public ServerResponse list(@PathVariable("evaluation_id") long evaluation_id){
+    public ServerResponse<List<Achievement>> list(@PathVariable("evaluation_id") long evaluation_id) {
         List<Achievement> achievements = achievementService.listEvaluation(evaluation_id);
-        return  ServerResponse.createBySuccess(achievements);
+        return ServerResponse.createBySuccess(achievements);
     }
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @PostMapping("/add")
-    public ServerResponse add(@RequestBody Achievement achievement,@PathVariable("evaluation_id") long evaluation_id) {
+    public ServerResponse add(@RequestBody Achievement achievement, @PathVariable("evaluation_id") long evaluation_id) {
         achievement.setEvaluationId(evaluation_id);
         return this.achievementService.addExperience(achievement);
     }
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @GetMapping("/{id:\\d+}")
     public ServerResponse getById(@PathVariable("id") Long id) {
@@ -68,9 +69,9 @@ public class AchievementController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @DeleteMapping("/delete/{id:\\d+}")
     public ServerResponse delete(@PathVariable("id") Long id) {
@@ -84,17 +85,17 @@ public class AchievementController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @PutMapping("/{id:\\d+}")
     public ServerResponse updateById(@PathVariable("id") Integer id,
                                      @RequestBody Achievement achievement) {
         achievement.setId(id.longValue());
         achievement.setUpdateTime(LocalDateTime.now());
-        boolean result =achievementService.updateById(achievement);
-        if(result)
+        boolean result = achievementService.updateById(achievement);
+        if (result)
             return ServerResponse.createBySuccessMessage("修改成功");
         return ServerResponse.createByErrorMessage("修改失败");
     }

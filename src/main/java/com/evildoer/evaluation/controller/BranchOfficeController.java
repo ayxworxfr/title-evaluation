@@ -7,8 +7,10 @@ import com.evildoer.evaluation.model.entity.BranchOffice;
 import com.evildoer.evaluation.model.vo.BranchOfficeVo;
 import com.evildoer.evaluation.service.IBranchOfficeService;
 import com.evildoer.evaluation.service.IUnitService;
-import com.sun.istack.internal.NotNull;
+import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -32,14 +34,15 @@ public class BranchOfficeController {
     }
 
     /**
+     * @return
      * @Author 安羽兮
      * @Description 返回列表
      * @Date 9:58 2020/11/22
      * @Param [page, limit]
      * @Return com.explore.common.ServerResponse
-     **/
+     */
     @GetMapping("/list")
-    public ServerResponse list() {
+    public ServerResponse<PageInfo<BranchOfficeVo>> list() {
         BasePage query = new BasePage();
         return ServerResponse.createBySuccess(officeService.pageByQuery(query));
     }

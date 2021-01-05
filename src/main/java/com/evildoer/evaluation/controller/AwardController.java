@@ -1,12 +1,9 @@
 package com.evildoer.evaluation.controller;
 
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.evildoer.evaluation.common.domain.ServerResponse;
-import com.evildoer.evaluation.dao.AwardMapper;
 import com.evildoer.evaluation.model.entity.Award;
 import com.evildoer.evaluation.service.IAwardService;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -14,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author evildoer
@@ -30,33 +27,34 @@ public class AwardController {
     }
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @return
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @GetMapping("/list")
-    public ServerResponse list(@PathVariable("evaluation_id") long evaluation_id){
+    public ServerResponse<List<Award>> list(@PathVariable("evaluation_id") long evaluation_id) {
         List<Award> experiences = awardService.listEvaluation(evaluation_id);
-        return  ServerResponse.createBySuccess(experiences);
+        return ServerResponse.createBySuccess(experiences);
     }
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @PostMapping("/add")
-    public ServerResponse add(@RequestBody Award award,@PathVariable("evaluation_id") long evaluation_id) {
+    public ServerResponse add(@RequestBody Award award, @PathVariable("evaluation_id") long evaluation_id) {
         award.setEvaluationId(evaluation_id);
         return this.awardService.addExperience(award);
     }
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @GetMapping("/{id:\\d+}")
     public ServerResponse getById(@PathVariable("id") Long id) {
@@ -70,9 +68,9 @@ public class AwardController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @DeleteMapping("/delete/{id:\\d+}")
     public ServerResponse delete(@PathVariable("id") Long id) {
@@ -86,17 +84,17 @@ public class AwardController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @PutMapping("/{id:\\d+}")
     public ServerResponse updateById(@PathVariable("id") Integer id,
                                      @RequestBody Award award) {
         award.setId(id.longValue());
         award.setUpdateTime(LocalDateTime.now());
-        boolean result =awardService.updateById(award);
-        if(result)
+        boolean result = awardService.updateById(award);
+        if (result)
             return ServerResponse.createBySuccessMessage("修改成功");
         return ServerResponse.createByErrorMessage("修改失败");
     }

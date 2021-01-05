@@ -7,12 +7,11 @@ import com.evildoer.evaluation.service.IStudyService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author evildoer
@@ -29,33 +28,34 @@ public class StudyController {
     }
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @return
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @GetMapping("/list")
-    public ServerResponse list(@PathVariable("evaluation_id") long evaluation_id){
+    public ServerResponse<List<Study>> list(@PathVariable("evaluation_id") long evaluation_id) {
         List<Study> studies = studyService.listEvaluation(evaluation_id);
-        return  ServerResponse.createBySuccess(studies);
+        return ServerResponse.createBySuccess(studies);
     }
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @PostMapping("/add")
-    public ServerResponse add(@RequestBody Study study,@PathVariable("evaluation_id") long evaluation_id) {
+    public ServerResponse add(@RequestBody Study study, @PathVariable("evaluation_id") long evaluation_id) {
         study.setEvaluationId(evaluation_id);
         return this.studyService.addStudy(study);
     }
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @GetMapping("/{id:\\d+}")
     public ServerResponse getById(@PathVariable("id") Long id) {
@@ -69,9 +69,9 @@ public class StudyController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @DeleteMapping("/delete/{id:\\d+}")
     public ServerResponse delete(@PathVariable("id") Long id) {
@@ -85,9 +85,9 @@ public class StudyController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @PutMapping("/{id:\\d+}")
     public ServerResponse updateById(@PathVariable("id") Integer id,
@@ -95,7 +95,7 @@ public class StudyController {
         study.setId(id.longValue());
         study.setUpdateTime(LocalDateTime.now());
         boolean result = studyService.updateById(study);
-        if(result)
+        if (result)
             return ServerResponse.createBySuccessMessage("修改成功");
         return ServerResponse.createByErrorMessage("修改失败");
     }

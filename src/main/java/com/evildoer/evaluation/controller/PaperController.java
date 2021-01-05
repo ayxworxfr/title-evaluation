@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author evildoer
@@ -27,33 +27,34 @@ public class PaperController {
     }
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @return
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @GetMapping("/list")
-    public ServerResponse list(@PathVariable("evaluation_id") long evaluation_id){
+    public ServerResponse<List<Paper>> list(@PathVariable("evaluation_id") long evaluation_id) {
         List<Paper> papers = paperService.listEvaluation(evaluation_id);
-        return  ServerResponse.createBySuccess(papers);
+        return ServerResponse.createBySuccess(papers);
     }
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @PostMapping("/add")
-    public ServerResponse add(@RequestBody Paper paper,@PathVariable("evaluation_id") long evaluation_id) {
+    public ServerResponse add(@RequestBody Paper paper, @PathVariable("evaluation_id") long evaluation_id) {
         paper.setEvaluationId(evaluation_id);
         return this.paperService.addExperience(paper);
     }
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @GetMapping("/{id:\\d+}")
     public ServerResponse getById(@PathVariable("id") Long id) {
@@ -67,9 +68,9 @@ public class PaperController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @DeleteMapping("/delete/{id:\\d+}")
     public ServerResponse delete(@PathVariable("id") Long id) {
@@ -83,17 +84,17 @@ public class PaperController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @PutMapping("/{id:\\d+}")
     public ServerResponse updateById(@PathVariable("id") Integer id,
                                      @RequestBody Paper paper) {
         paper.setId(id.longValue());
         paper.setUpdateTime(LocalDateTime.now());
-        boolean result =paperService.updateById(paper);
-        if(result)
+        boolean result = paperService.updateById(paper);
+        if (result)
             return ServerResponse.createBySuccessMessage("修改成功");
         return ServerResponse.createByErrorMessage("修改失败");
     }

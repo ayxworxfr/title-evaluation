@@ -33,7 +33,6 @@ public class SupplyController {
     }
 
 
-
     @PostMapping("/upload")
     public ServerResponse upload(@RequestParam("file") MultipartFile file) {
         return supplyService.upload(file);
@@ -41,25 +40,24 @@ public class SupplyController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @return
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @GetMapping("/list")
-    public ServerResponse list(@PathVariable("evaluation_id") long evaluation_id){
+    public ServerResponse<SupplyVo> list(@PathVariable("evaluation_id") long evaluation_id) {
         SupplyVo supplyVos = new SupplyVo();
         supplyVos.setEvaluation(evaluationService.getById(evaluation_id));
-        BeanUtils.copyProperties(supplyVos,supplyService.getById(supplyVos.getEvaluation().getSupplyId()));
-        return  ServerResponse.createBySuccess(supplyVos);
+        BeanUtils.copyProperties(supplyVos, supplyService.getById(supplyVos.getEvaluation().getSupplyId()));
+        return ServerResponse.createBySuccess(supplyVos);
     }
 
 
-
-
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @GetMapping("/{id:\\d+}")
     public ServerResponse getById(@PathVariable("id") Long id) {
@@ -73,9 +71,9 @@ public class SupplyController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @DeleteMapping("/delete/{id:\\d+}")
     public ServerResponse delete(@PathVariable("id") Long id) {
@@ -89,17 +87,17 @@ public class SupplyController {
 
 
     /**
-     *@author pu
-     *@data 2020/11/23
-     *description:
+     * @author pu
+     * @data 2020/11/23
+     * description:
      */
     @PutMapping("/{id:\\d+}")
     public ServerResponse updateById(@PathVariable("id") Integer id,
                                      @RequestBody Supply supply) {
         supply.setId(id.longValue());
         supply.setUpdateTime(LocalDateTime.now());
-        boolean result =supplyService.updateById(supply);
-        if(result)
+        boolean result = supplyService.updateById(supply);
+        if (result)
             return ServerResponse.createBySuccessMessage("修改成功");
         return ServerResponse.createByErrorMessage("修改失败");
     }
