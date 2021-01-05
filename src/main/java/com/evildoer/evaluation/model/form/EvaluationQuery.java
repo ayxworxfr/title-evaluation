@@ -22,4 +22,6 @@ public class EvaluationQuery extends BasePage {
     @ApiModelProperty(value = "状态", required = false, example = "1")
     @Size(max = 25, message = "状态的字符长度不能超过 {max}")
     private Integer status;
+
+    private Integer userId;
 }

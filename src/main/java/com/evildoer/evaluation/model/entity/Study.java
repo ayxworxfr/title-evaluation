@@ -32,12 +32,12 @@ public class Study extends BaseEntity {
     private String project;
 
     /**
-     * 学历水平
+     * 学历水平 （学位）
      */
     private String level;
 
     /**
-     * 学历性质
+     * 学历性质 （学历）
      */
     private String quality;
 
@@ -47,7 +47,7 @@ public class Study extends BaseEntity {
     private String school;
 
     /**
-     * 学历照片
+     * 学历照片(毕业时间)
      */
     private String proveUrl;
 

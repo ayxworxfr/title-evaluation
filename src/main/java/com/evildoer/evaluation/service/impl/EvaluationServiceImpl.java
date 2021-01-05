@@ -53,6 +53,7 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationMapper, Evaluat
         if(query.getStatus()!=-1){
             queryWrapper.like(Evaluation::getStatus, query.getStatus());
         }
+        queryWrapper.eq(Evaluation::getUserId,query.getUserId());
         PageHelper.startPage(query.getPage(), query.getPageSize());
         List<Evaluation> list = this.list(queryWrapper);
         List<EvaluationVo> lists = convert(list);
@@ -67,13 +68,18 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationMapper, Evaluat
         supply.setCreateTime(LocalDateTime.now());
         if(supplyService.save(supply)) {
             QueryWrapper<Supply> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(Supply::getCreateTime, supply.getCreateTime());
-            List<Supply> supplies = supplyService.list(queryWrapper);
-            evaluation.setSupplyId(supplies.get(0).getId());
+            queryWrapper.orderByDesc("id");
+            queryWrapper.last("limit 0,1");
+            evaluation.setSupplyId(supplyService.getOne(queryWrapper).getId());
         }
         boolean result = save(evaluation);
+        QueryWrapper<Evaluation> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Evaluation::getUserId,evaluation.getUserId());
+        queryWrapper.orderByDesc("id");
+        queryWrapper.last("limit 0,1");
+        Evaluation data = this.getOne(queryWrapper);
         if(result)
-            return ServerResponse.createBySuccess("添加成功");
+            return ServerResponse.createBySuccess(data);
         return ServerResponse.createByError();
     }
 

@@ -34,8 +34,9 @@ public class EvaluationController {
      *description:
      */
     @GetMapping("/list")
-    public ServerResponse list(){
+    public ServerResponse list(Integer userId){
         EvaluationQuery query = new EvaluationQuery();
+        query.setUserId(userId);
         return ServerResponse.createBySuccess(evaluationService.pageByQuery(query));
     }
 
